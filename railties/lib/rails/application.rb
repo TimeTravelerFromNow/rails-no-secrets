@@ -633,10 +633,12 @@ module Rails
 
     private
       def generate_local_secret
+	config.secret_key_base ||= Rails.application.credentials.secret_key_base 
+
         if config.secret_key_base.nil?
           key_file = Rails.root.join("tmp/local_secret.txt")
 
-          if File.exist?(key_file)
+          if File.exist?(key_file) 
             config.secret_key_base = File.binread(key_file)
           else
             random_key = SecureRandom.hex(64)
